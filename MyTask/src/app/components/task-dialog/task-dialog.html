@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>Task edit</h2>
+
+<mat-dialog-content>
+  <div>
+    <mat-form-field class="form-width-full">
+      <label for="title">Title</label>
+      <input type="text" id="title" matInput [(ngModel)]="this.data.title">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="form-width-full">
+      <label for="description">Description</label>
+      <textarea id="description" matInput [(ngModel)]="this.data.description"></textarea>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="form-width-full">
+      <label for="status">Status</label>
+      <mat-select id="status" [(ngModel)]="this.data.status">
+        <mat-option value="TODO">TODO</mat-option>
+        <mat-option value="IN_PROGRESS">IN PROGRESS</mat-option>
+        <mat-option value="DONE">DONE</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-button color="primary" (click)="save()">Save</button>
+</mat-dialog-actions>
