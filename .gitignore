@@ -26,3 +26,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+/.vs
+/MyTask/.vscode
+/MyTaskAPI/.vs
+/MyTaskAPI/bin/Debug/net10.0
