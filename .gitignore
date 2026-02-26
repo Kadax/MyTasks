@@ -30,3 +30,11 @@ yarn-error.log*
 /MyTask/.vscode
 /MyTaskAPI/.vs
 /MyTaskAPI/bin/Debug/net10.0
+/MyTaskAPI/obj
+/MyTaskAPI/tasks.d*
+/MyTaskAPI/Debug
+/MyTaskAPI/obj/Debug/net10.0/MyTaskAPI.AssemblyInfo.cs
+/MyTaskAPI/obj/Debug/net10.0/MyTaskAPI.AssemblyInfoInputs.cache
+/MyTaskAPI/obj/Container/ContainerId.cache
+/MyTaskAPI/obj/Debug/net10.0/ref/MyTaskAPI.dll
+/MyTaskAPI/obj/Debug/net10.0/refint/MyTaskAPI.dll
