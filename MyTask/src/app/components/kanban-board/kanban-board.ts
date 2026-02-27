@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Task, TaskStatus } from '../../models/task.model';
+import { MyTask, Status } from '../../models/task.model';
 import { TaskService } from '../../services/task.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
@@ -28,18 +28,14 @@ import { TaskDialogComponent } from '../task-dialog/task-dialog';
 
 
 export class KanbanBoardComponent implements OnInit {
-  statuses = [
-    { key: TaskStatus.TODO, label: 'Todo' },
-    { key: TaskStatus.IN_PROGRESS, label: 'In Progress' },
-    { key: TaskStatus.DONE, label: 'Done' }
-  ];
+
 
   constructor(public taskService: TaskService,
               private dialog: MatDialog,
               private cdr: ChangeDetectorRef
   ) {}
 
-  tasksByStatus = new Map<string, Task[]>();
+  tasksByStatus = new Map<number, MyTask[]>();
   isUpdate: boolean = false;
 
 
@@ -55,8 +51,8 @@ export class KanbanBoardComponent implements OnInit {
   }
 
   update(){
-    this.statuses.forEach(s => {
-      this.tasksByStatus.set(s.key, this.taskService.getTasksByStatus(s.key));
+    this.taskService.statuses.forEach(s => {
+      this.tasksByStatus.set(s.id, this.taskService.getTasksByStatus(s));
     });
   }
 
@@ -65,11 +61,12 @@ export class KanbanBoardComponent implements OnInit {
   }
 
 
+
   get statusKeys(): string[] {
-    return this.statuses.map(s => s.key);
+    return this.taskService.statuses.map(s => s.name);
   }
 
-  drop(event: CdkDragDrop<any[]> | any, targetStatusKey: string) {
+  drop(event: CdkDragDrop<any[]> | any, targetStatusKey: number) {
     if (event.previousContainer === event.container) {
       // re‑order within the same column
       this.taskService.updateTaskOrder(event.item.data.id, event.currentIndex);
@@ -77,7 +74,7 @@ export class KanbanBoardComponent implements OnInit {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       // move to a different column
-      this.taskService.updateTaskStatus(event.item.data.id, this.statuses.find(i=>i.key === targetStatusKey)?.key)
+      this.taskService.updateTaskStatus(event.item.data.id, this.taskService.statuses.find(i=> i.id === targetStatusKey))
 
 
 

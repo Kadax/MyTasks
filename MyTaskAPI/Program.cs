@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using MyTaskAPI.Model;
+using MyTaskAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,7 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddScoped<ITasksService, TasksService>();
 
 
 

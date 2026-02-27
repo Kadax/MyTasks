@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyTaskAPI.Model;
 
@@ -10,9 +11,11 @@ using MyTaskAPI.Model;
 namespace MyTaskAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260226131626_tasks")]
+    partial class tasks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.3");
@@ -215,14 +218,8 @@ namespace MyTaskAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("createAt")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("updateAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("id");
@@ -236,9 +233,6 @@ namespace MyTaskAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("createAt")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("description")
                         .HasColumnType("TEXT");
 
@@ -246,9 +240,6 @@ namespace MyTaskAPI.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<bool?>("isArchive")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("orderNumber")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("status")
@@ -259,12 +250,6 @@ namespace MyTaskAPI.Migrations
 
                     b.Property<string>("title")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<double>("totalTime")
-                        .HasColumnType("REAL");
-
-                    b.Property<DateTime>("updateAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("id");
@@ -280,81 +265,13 @@ namespace MyTaskAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("createAt")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("updateAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("id");
 
                     b.ToTable("TaskStatuses");
-
-                    b.HasData(
-                        new
-                        {
-                            id = 1,
-                            createAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            name = "To Do",
-                            updateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            id = 2,
-                            createAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            name = "In Progress",
-                            updateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            id = 3,
-                            createAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            name = "Blocked",
-                            updateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            id = 4,
-                            createAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            name = "Testing",
-                            updateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            id = 5,
-                            createAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            name = "Done",
-                            updateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
-                });
-
-            modelBuilder.Entity("MyTaskAPI.Model.Tasks.TimeSpent", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("createAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("taskId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<double>("time")
-                        .HasColumnType("REAL");
-
-                    b.Property<DateTime>("updateAt")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("taskId");
-
-                    b.ToTable("TimeSpents");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -419,17 +336,6 @@ namespace MyTaskAPI.Migrations
                         .HasForeignKey("executorId");
 
                     b.Navigation("executor");
-                });
-
-            modelBuilder.Entity("MyTaskAPI.Model.Tasks.TimeSpent", b =>
-                {
-                    b.HasOne("MyTaskAPI.Model.Tasks.MyTask", "task")
-                        .WithMany()
-                        .HasForeignKey("taskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("task");
                 });
 
             modelBuilder.Entity("MyTaskAPI.Model.ApplicationRole", b =>

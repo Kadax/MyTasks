@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MyTaskAPI.Model.Tasks;
+using System.Reflection.Metadata;
 
 
 namespace MyTaskAPI.Model
@@ -15,6 +17,17 @@ namespace MyTaskAPI.Model
         { 
         
         }
+
+        public DbSet<Status> TaskStatuses { get; set; }
+
+        public DbSet<ExecutorTask> Executors { set; get; }       
+
+        public DbSet<MyTask> Tasks { set; get; }
+
+        public DbSet<TimeSpent> TimeSpents { set; get; }
+
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,6 +51,17 @@ namespace MyTaskAPI.Model
                     .IsRequired();
             });
 
+            modelBuilder.Entity<Status>().HasData(
+            new Status { id = 1, name= "To Do",  createAt= DateTime.Now , updateAt= DateTime.Now },
+            new Status { id = 2, name = "In Progress", createAt = DateTime.Now, updateAt = DateTime.Now },
+            new Status { id = 3, name = "Blocked", createAt = DateTime.Now, updateAt = DateTime.Now },
+            new Status { id = 4, name = "Testing", createAt = DateTime.Now, updateAt = DateTime.Now },
+            new Status { id = 5, name = "Done", createAt = DateTime.Now, updateAt = DateTime.Now }
+        );
+
+
         }
+
+
     }       
 }

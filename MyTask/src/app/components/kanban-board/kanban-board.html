@@ -1,8 +1,8 @@
 <div class="board" cdkDropListGroup>
-  <ng-container *ngFor="let status of statuses" >
+  <ng-container *ngFor="let status of this.taskService.statuses" >
     <mat-card class="column">
       <mat-card-header>
-        <mat-card-title>{{ status.label }}
+        <mat-card-title>{{ status }}
           <button mat-button (click)="this.openTaskDialog()">
             <mat-icon matListIcon>add</mat-icon>
           </button>
@@ -10,13 +10,13 @@
       </mat-card-header>
       <mat-card-content>
         <div cdkDropList
-             [cdkDropListData]="tasksByStatus.get(status.key)"
+             [cdkDropListData]="tasksByStatus.get(status.id)"
              [cdkDropListConnectedTo]="statusKeys"
              class="task-list"
-             (cdkDropListDropped)="drop($event, status.key)">
+             (cdkDropListDropped)="drop($event, status.id)">
 
           <mat-list>
-            <mat-list-item lines="3" *ngFor="let task of tasksByStatus.get(status.key); let i = index"
+            <mat-list-item lines="3" *ngFor="let task of tasksByStatus.get(status.id); let i = index"
                            cdkDrag
                            [cdkDragData]="task"
                            class="task-item">

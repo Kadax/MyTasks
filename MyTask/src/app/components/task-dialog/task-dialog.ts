@@ -6,8 +6,8 @@ import { MAT_DIALOG_DATA,
   MatDialogContent,
   MatDialogRef,
   MatDialogTitle } from '@angular/material/dialog'; //Import Dialog
-import { Task } from '../../models/task.model';
-import { TaskStatus } from '../../models/task.model';
+import { MyTask } from '../../models/task.model';
+import { Status } from '../../models/task.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -45,14 +45,14 @@ export class TaskDialogComponent implements OnInit {
 
   }
 
-  @Output() taskChangeEvent = new EventEmitter<Task>();
+  @Output() taskChangeEvent = new EventEmitter<MyTask>();
 
-  data = inject<Task>(MAT_DIALOG_DATA);
+  data = inject<MyTask>(MAT_DIALOG_DATA);
 
 
   ngOnInit(): void {
     if(this.data==null){
-      this.data = { id: 0, title: '', description:'', status: TaskStatus.TODO, orderNumber: 100 };
+      this.data = { id: 0, title: '', description:'', statusId: 1, orderNumber: 0 };
     }
   }
 
