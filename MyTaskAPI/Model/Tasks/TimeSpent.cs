@@ -8,13 +8,13 @@ namespace MyTaskAPI.Model.Tasks
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
-        public double time { set; get; }
 
         [Required]
         public int taskId { set; get; }
 
         [ForeignKey("taskId")]
-        public virtual required MyTask task { set; get; }
+        public virtual MyTask? task { set; get; }
+        public int time { set; get; }
 
         [Required]
         public DateTime createAt { set; get; } = DateTime.Now;

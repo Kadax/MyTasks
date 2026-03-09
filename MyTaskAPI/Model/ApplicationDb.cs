@@ -52,11 +52,11 @@ namespace MyTaskAPI.Model
             });
 
             modelBuilder.Entity<Status>().HasData(
-            new Status { id = 1, name= "To Do",  createAt= DateTime.Now , updateAt= DateTime.Now },
-            new Status { id = 2, name = "In Progress", createAt = DateTime.Now, updateAt = DateTime.Now },
-            new Status { id = 3, name = "Blocked", createAt = DateTime.Now, updateAt = DateTime.Now },
-            new Status { id = 4, name = "Testing", createAt = DateTime.Now, updateAt = DateTime.Now },
-            new Status { id = 5, name = "Done", createAt = DateTime.Now, updateAt = DateTime.Now }
+            new Status { id = 1, name= "To Do",  createAt= new DateTime(), updateAt= new DateTime() },
+            new Status { id = 2, name = "In Progress", createAt = new DateTime(), updateAt = new DateTime() },
+            new Status { id = 3, name = "Blocked", createAt = new DateTime(), updateAt = new DateTime() },
+            new Status { id = 4, name = "Testing", createAt = new DateTime(), updateAt = new DateTime() },
+            new Status { id = 5, name = "Done", createAt = new DateTime(), updateAt = new DateTime() }
         );
 
 

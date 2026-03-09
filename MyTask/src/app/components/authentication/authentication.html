@@ -1,0 +1,31 @@
+<form  class="auth-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <h2>Вход в систему</h2>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Электронная почта</mat-label>
+    <input matInput formControlName="email" placeholder="example@mail.com" />
+    @if (loginForm.hasError('email') && !loginForm.hasError('required')) {
+      <mat-error>Please enter a valid email address</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Пароль</mat-label>
+    <input matInput type="password" formControlName="password" placeholder="Ваш пароль" />
+    @if (loginForm.hasError('password') && !loginForm.hasError('required')) {
+      <mat-error>
+        Пароль обязателен
+      </mat-error>
+    }
+  </mat-form-field>
+
+  <mat-checkbox formControlName="rememberMe">Запомнить меня</mat-checkbox>
+
+  @if (error){
+    <div class="error-message">{{ error }}</div>
+  }
+
+  <button matButton="outlined" [disabled]="loading || loginForm.invalid" type="submit" >
+    {{ loading ? 'Вход...' : 'Войти' }}
+  </button>
+</form>

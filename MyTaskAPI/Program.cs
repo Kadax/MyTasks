@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +40,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
        options => builder.Configuration.Bind("JwtSettings", options))
    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
-       options => builder.Configuration.Bind("CookieSettings", options));
+       options => {
+                builder.Configuration.Bind("CookieSettings", options);
+                options.Cookie.Domain = "https://localhost:4200/";
+                options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+                options.Cookie.HttpOnly = false;
+                options.Cookie.SameSite = SameSiteMode.None;
+           options.LoginPath = "/auth";
+           }
+       );
 
 
 builder.Services.AddAuthorization();

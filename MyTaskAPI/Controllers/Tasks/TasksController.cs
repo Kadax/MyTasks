@@ -10,7 +10,7 @@ using MyTaskAPI.Services;
 
 namespace MyTaskAPI.Controllers.Tasks
 {                       
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TasksController : ControllerBase
@@ -59,12 +59,19 @@ namespace MyTaskAPI.Controllers.Tasks
             var result = await _tasksService.UpdateTask(updatedTask);
 
             return Ok(result);
-        }
+        }                                       
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMyTask(int id)
+        public async Task<IActionResult> DeleteMyTask(int id,[FromBody] bool isArchive = true)
         {
-            await _tasksService.DeleteTask(id);
+            if (isArchive)
+            {
+                await _tasksService.ArchiveTask(id);
+            }
+            else
+            {
+                await _tasksService.DeleteTask(id);
+            }
             return NoContent();
         }
 

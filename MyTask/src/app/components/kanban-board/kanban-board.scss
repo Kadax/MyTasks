@@ -9,14 +9,60 @@
 
 }
 
+.status-title{
+  width: 100%;
+  display: flex;
+  p {
+      margin: 0 auto 0 0;
+  }
+  .add-button{
+      margin: 0 0 auto 0;
+      border-radius: 5px;
+  }
+
+}
+
+::ng-deep .mat-mdc-card-header-text {
+    width: 100%;
+}
+
+.status{
+  margin: 0 0 15px 0;
+
+}
+
 
 .card-body{
   min-height: 50px;
   //margin: 10px 0 5px 0;
 }
 
+.card-time{
+  display: flex;
+}
+
 .card-header{
   font-weight: 500;
+  width: 100%;
+
+  .task-title{
+    width: calc(100% - 90px);
+    height: 55px;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    white-space: break-spaces;
+  }
+
+  .button-action{
+    border: none;
+    background-color: unset;
+    height: 30px;
+    cursor: pointer;
+  }
+
+
 }
 
 .task-number{

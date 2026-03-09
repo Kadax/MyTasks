@@ -16,6 +16,9 @@ import {MatSelectModule} from '@angular/material/select'
 import {MatButtonModule} from '@angular/material/button'
 import {FormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { TaskService } from '../../services/task.service';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 @Component({
@@ -32,7 +35,9 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     FormsModule,
     MatDialogTitle,
     MatDialogContent,
-    MatDialogActions
+    MatDialogActions,
+    MatDatepickerModule,
+    MatNativeDateModule
   ]
 })
 
@@ -40,7 +45,9 @@ export class TaskDialogComponent implements OnInit {
 
 
 
-  constructor(private dialogRef: MatDialogRef<TaskDialogComponent>)
+  constructor(private dialogRef: MatDialogRef<TaskDialogComponent>,
+              public taskService: TaskService
+  )
   {
 
   }
@@ -49,18 +56,74 @@ export class TaskDialogComponent implements OnInit {
 
   data = inject<MyTask>(MAT_DIALOG_DATA);
 
+  planed: number =0;
 
   ngOnInit(): void {
     if(this.data==null){
       this.data = { id: 0, title: '', description:'', statusId: 1, orderNumber: 0 };
     }
+    else{
+      this.planed = this.data.plannedTime ? this.data.plannedTime/60 : 0;
+    }
+
+  }
+
+  delete(archive: boolean){
+    if(this.data.id != 0){
+
+      this.taskService.deleteTask(this.data.id, archive).subscribe(
+        (data)=>{
+          var tasks = this.taskService.tasksSubject.getValue().filter(i=>i.id !== this.data.id)
+          this.taskService.tasksSubject.next(tasks);
+          this.taskChangeEvent.emit(undefined);
+          this.dialogRef.close();
+        },
+        error=>{
+
+        }
+
+
+      );
+
+
+    }
   }
 
   save(): void {
 
-    this.taskChangeEvent.emit(this.data);
+      this.data.plannedTime = this.planed*60;
 
-    this.dialogRef.close();
+      if(this.data.id != 0){
+        this.taskService.updateTask(this.data).subscribe(
+        (data)=>{
+          this.taskChangeEvent.emit(data);
+          let t = this.taskService.tasksSubject.value.find(i=>i.id == data.id);
+          if(t){
+            t = data;
+          }
+          this.dialogRef.close();
+        },
+        (error)=>{
+          console.log(error);
+          alert("Не удалось создать задачу...");
+        }
+      );
+    }
+    else{
+      this.taskService.addTask(this.data).subscribe(
+        (data)=>{
+          this.taskService.tasksSubject.next([...this.taskService.tasksSubject.getValue(), data]);
+          this.taskChangeEvent.emit(data);
+          this.dialogRef.close();
+        },
+        (error)=>{
+          console.log(error);
+          alert("Не удалось создать задачу...");
+        }
+      );
+    }
+
+
   }
 
   cancel(): void {

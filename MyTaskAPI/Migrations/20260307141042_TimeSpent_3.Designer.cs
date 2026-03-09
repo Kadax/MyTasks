@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyTaskAPI.Model;
 
@@ -10,9 +11,11 @@ using MyTaskAPI.Model;
 namespace MyTaskAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260307141042_TimeSpent_3")]
+    partial class TimeSpent_3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.3");
@@ -239,9 +242,6 @@ namespace MyTaskAPI.Migrations
                     b.Property<DateTime>("createAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("deadline")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("description")
                         .HasColumnType("TEXT");
 
@@ -254,9 +254,6 @@ namespace MyTaskAPI.Migrations
                     b.Property<int>("orderNumber")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("plannedTime")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("statusId")
                         .HasColumnType("INTEGER");
 
@@ -264,8 +261,8 @@ namespace MyTaskAPI.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("totalTime")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("totalTime")
+                        .HasColumnType("REAL");
 
                     b.Property<DateTime>("updateAt")
                         .HasColumnType("TEXT");

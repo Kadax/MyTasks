@@ -26,9 +26,7 @@ namespace MyTaskAPI.Controllers.Auth
         [HttpGet]
         public async Task<UserDTO> Get()
         {
-
             var s = HttpContext.User;
-
             var u = new UserDTO();
 
             if(u != null)
@@ -39,7 +37,6 @@ namespace MyTaskAPI.Controllers.Auth
             }
 
             return u;            
-
         }
 
 
@@ -47,8 +44,6 @@ namespace MyTaskAPI.Controllers.Auth
         [HttpPost]
         public async Task<UserDTO> OnPost(SignInDTO signIn)
         {
-
-
             var result = await _signInManager.PasswordSignInAsync(signIn.email, signIn.password, signIn.rememberMe, true);
 
             if (result.Succeeded)

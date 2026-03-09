@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import {MatInputModule} from '@angular/material/input';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TaskDialogComponent } from '../task-dialog/task-dialog';
+import {MatChipsModule} from '@angular/material/chips';
 
 
 @Component({
@@ -22,7 +23,8 @@ import { TaskDialogComponent } from '../task-dialog/task-dialog';
     MatListModule,
     MatIconModule,
     MatInputModule,
-    MatDialogModule
+    MatDialogModule,
+    MatChipsModule
   ]
 })
 
@@ -36,7 +38,7 @@ export class KanbanBoardComponent implements OnInit {
   ) {}
 
   tasksByStatus = new Map<number, MyTask[]>();
-  isUpdate: boolean = false;
+  isUpdate: boolean = true;
 
 
   ngOnInit(): void {
@@ -48,6 +50,13 @@ export class KanbanBoardComponent implements OnInit {
         this.cdr.markForCheck();
       }
     }, 1000);
+
+    this.taskService.GetListTasks().subscribe(
+      data=>{
+        this.isUpdate = true;
+      }
+    );
+
   }
 
   update(){
@@ -60,23 +69,23 @@ export class KanbanBoardComponent implements OnInit {
 
   }
 
-
-
   get statusKeys(): string[] {
     return this.taskService.statuses.map(s => s.name);
   }
 
+
   drop(event: CdkDragDrop<any[]> | any, targetStatusKey: number) {
     if (event.previousContainer === event.container) {
       // re‑order within the same column
-      this.taskService.updateTaskOrder(event.item.data.id, event.currentIndex);
 
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+
+      this.taskService.updateTaskOrder(event.container.data);
+
+
     } else {
       // move to a different column
       this.taskService.updateTaskStatus(event.item.data.id, this.taskService.statuses.find(i=> i.id === targetStatusKey))
-
-
 
       transferArrayItem(
         event.previousContainer.data,
@@ -87,20 +96,46 @@ export class KanbanBoardComponent implements OnInit {
     }
   }
 
-  openTaskDialog() {
+  openTaskDialog(task: MyTask | null) {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
-      width: '500px'
+      width: '500px',
+      data: task
     });
 
 
-    dialogRef.componentInstance.taskChangeEvent.subscribe((task) => {
-      this.taskService.addTask(task);
-      this.isUpdate = true;
+    dialogRef.componentInstance.taskChangeEvent.subscribe(
+      (task) => {
+        this.isUpdate = true;
 
-       // Handle the new or updated task
-       console.log('Task created/updated:', task);
+        // Handle the new or updated task
+        console.log('Task created/updated:', task);
      });
   }
+
+  AddTime(task: MyTask, time: number){
+    if(task.id && task.id != 0){
+      this.taskService.AddTime(task.id, time).subscribe(
+        (data)=>{
+          task.totalTime = data;
+           this.cdr.markForCheck();
+        },
+        (error)=>{
+          alert(error);
+        }
+      )
+    }
+
+  }
+
+totalTime(time: number | undefined): string {
+  if(time){
+    let h = Math.floor(time/60);
+    let m = time - h*60;
+
+    return h+"h "+ (m!=0? m+'m' : '');
+  }
+  return "-";
+}
 
 
 }

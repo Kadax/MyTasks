@@ -1,0 +1,20 @@
+.auth-form {
+  max-width: 400px;
+  margin: 4rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+
+  h2 {
+    text-align: center;
+  }
+
+  .error-message {
+    color: #d32f2f;
+    text-align: center;
+  }
+
+  // button {
+  //   align-self: flex-end;
+  // }
+}

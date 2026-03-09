@@ -23,9 +23,14 @@ export class ExecutorTask {
 }
 
 export class MyTask {
-    id!: number;
+    id: number = 0;
     title!: string;
     description?: string;
+
+    deadline?: Date;
+    plannedTime?: number;
+
+
     isArchive?: boolean;
     statusId!: number;
     status?: Status;

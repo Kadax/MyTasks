@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+using System.Timers;
 
 namespace MyTaskAPI.Model.Tasks
 {
@@ -10,13 +12,19 @@ namespace MyTaskAPI.Model.Tasks
         public int id { get; set; }
         public string title { set; get; }
         public string? description { set; get; }
+
+        public DateTime? deadline { set; get; }
+        public int plannedTime { set;  get; }
+
+
         public bool? isArchive { set; get; }
 
         [Required]
         public int statusId { set; get; }
 
         [ForeignKey("statusId")]
-        public virtual TaskStatus status { set; get; }
+        [JsonIgnore]
+        public virtual Status? status { set; get; }
 
         public int orderNumber { set; get; } = 0;
 
@@ -24,7 +32,7 @@ namespace MyTaskAPI.Model.Tasks
         [ForeignKey("executorId")]
         public virtual ExecutorTask? executor { set; get; }
 
-        public double totalTime { set; get; } = 0;
+        public int totalTime { set; get; } = 0;
 
         [Required]
         public DateTime createAt { set; get; } = DateTime.Now;

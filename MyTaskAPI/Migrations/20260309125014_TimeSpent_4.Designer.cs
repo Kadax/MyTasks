@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyTaskAPI.Model;
 
@@ -10,9 +11,11 @@ using MyTaskAPI.Model;
 namespace MyTaskAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260309125014_TimeSpent_4")]
+    partial class TimeSpent_4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.3");
@@ -239,9 +242,6 @@ namespace MyTaskAPI.Migrations
                     b.Property<DateTime>("createAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("deadline")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("description")
                         .HasColumnType("TEXT");
 
@@ -252,9 +252,6 @@ namespace MyTaskAPI.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("orderNumber")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("plannedTime")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("statusId")

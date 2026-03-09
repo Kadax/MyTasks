@@ -1,9 +1,13 @@
+<!-- <div>
+  Доска задач
+</div> -->
 <div class="board" cdkDropListGroup>
   <ng-container *ngFor="let status of this.taskService.statuses" >
     <mat-card class="column">
-      <mat-card-header>
-        <mat-card-title>{{ status }}
-          <button mat-button (click)="this.openTaskDialog()">
+      <mat-card-header class="status">
+        <mat-card-title class="status-title">
+          <p>{{ status.name }}</p>
+          <button mat-button (click)="this.openTaskDialog(null)" class="add-button">
             <mat-icon matListIcon>add</mat-icon>
           </button>
         </mat-card-title>
@@ -20,16 +24,21 @@
                            cdkDrag
                            [cdkDragData]="task"
                            class="task-item">
+
                 <span class="card-header" matListItemLine>
                   <div  class="task-row">
                     <mat-icon matListIcon>drag_indicator</mat-icon>
                     <p class="task-number">
-                      #{{i+1}}.
+                      #{{task.id}}.
                     </p>
 
                     <div class="task-title">
                       {{task.title}}
                     </div>
+                    <button matMiniFab aria-label="Изменение задачи" class="button-action"
+                     (click)="this.openTaskDialog(task)">
+                      <mat-icon>edit</mat-icon>
+                    </button>
                   </div>
                 </span>
                 @if (task.description){
@@ -38,7 +47,15 @@
                   </span>
                 }
                 <div matListItemLine>
-                  1ч 2ч
+                  Total time: {{totalTime(task.totalTime)}}
+                </div>
+                <div matListItemLine class="card-time">
+                  <mat-chip-set aria-label="Fish selection">
+                    <mat-chip (click)="this.AddTime(task, 15)">15m</mat-chip>
+                    <mat-chip (click)="this.AddTime(task, 60)">1h</mat-chip>
+                    <mat-chip (click)="this.AddTime(task, 120)">2h</mat-chip>
+                    <mat-chip (click)="this.AddTime(task, 240)">4h</mat-chip>
+                  </mat-chip-set>
                 </div>
             </mat-list-item>
           </mat-list>

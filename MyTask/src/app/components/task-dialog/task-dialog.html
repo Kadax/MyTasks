@@ -13,19 +13,46 @@
       <textarea id="description" matInput [(ngModel)]="this.data.description"></textarea>
     </mat-form-field>
   </div>
+  <div class="form-width-full deadline-time">
+    <mat-form-field class="deadline">
+      <label for="title">Deadline</label>
+      <input matInput [matDatepicker]="picker" [(ngModel)]="this.data.deadline">
+      <mat-hint>DD.MM.YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker ></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="planedTime">
+      <label for="title">Planned time, hours</label>
+      <input type="number" id="Planned time" matInput [(ngModel)]="this.planed">
+    </mat-form-field>
+  </div>
   <div>
     <mat-form-field class="form-width-full">
       <label for="status">Status</label>
-      <mat-select id="status" [(ngModel)]="this.data.status">
-        <mat-option value="TODO">TODO</mat-option>
-        <mat-option value="IN_PROGRESS">IN PROGRESS</mat-option>
-        <mat-option value="DONE">DONE</mat-option>
+      <mat-select id="status" [(ngModel)]="this.data.statusId">
+        @for (item of this.taskService.statuses; track $index) {
+          <mat-option [value]="item.id">{{item.name}}</mat-option>
+        }
       </mat-select>
     </mat-form-field>
   </div>
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button mat-button (click)="cancel()">Cancel</button>
-  <button mat-button color="primary" (click)="save()">Save</button>
+  <button matButton="outlined" (click)="this.delete(false)" [hidden]="this.data.id==0">
+    <mat-icon>
+      delete
+    </mat-icon>
+    Delete
+  </button>
+
+  <button matButton="outlined" (click)="this.delete(true)" [hidden]="this.data.id==0">
+    <mat-icon>
+      archive
+    </mat-icon>
+    Archive
+  </button>
+
+  <button matButton="filled" (click)="cancel()">Cancel</button>
+  <button matButton="filled" color="primary" (click)="save()">Save</button>
 </mat-dialog-actions>
