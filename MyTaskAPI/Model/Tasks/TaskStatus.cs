@@ -9,6 +9,8 @@ namespace MyTaskAPI.Model.Tasks
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { set; get; }
         public string name { set; get; }
+        public bool? isHidden { set; get; } = false;
+
         [Required]
         public DateTime createAt { set; get; } = DateTime.Now;
         [Required]

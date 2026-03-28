@@ -29,10 +29,31 @@ namespace MyTaskAPI.Model.Tasks
         public int orderNumber { set; get; } = 0;
 
         public int? executorId { set; get; }
+
         [ForeignKey("executorId")]
         public virtual ExecutorTask? executor { set; get; }
 
         public int totalTime { set; get; } = 0;
+
+        public int? taskTypesId { set; get; }
+        [ForeignKey("taskTypesId")]
+        public virtual TypeTask? TypeTask { set; get; }
+
+        public bool? isFixed { set; get; }
+
+
+        //[Required]
+        public string? autorId { set; get; }
+
+        [ForeignKey("autorId")]
+        public virtual ApplicationUser? autor { set; get; }
+
+        //[Required]
+        public string? modifiedId { set; get; }
+
+        [ForeignKey("modifiedId")]
+        public virtual ApplicationUser? modified { set; get; }
+
 
         [Required]
         public DateTime createAt { set; get; } = DateTime.Now;

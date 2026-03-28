@@ -2,6 +2,15 @@
 <div>
     <div class="header">
       <h1>Доска задач</h1>
+
+      <div class="settings">
+        @if (this.authService.isAdmin()) {
+          <button  matMiniFab routerLink="settings">
+            <mat-icon>settings</mat-icon>
+          </button>
+        }
+      </div>
     </div>
     <router-outlet></router-outlet>
 </div>
+

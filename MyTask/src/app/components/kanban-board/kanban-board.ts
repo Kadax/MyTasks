@@ -98,7 +98,7 @@ export class KanbanBoardComponent implements OnInit {
 
   openTaskDialog(task: MyTask | null) {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
-      width: '500px',
+      width: '700px',
       data: task
     });
 

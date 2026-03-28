@@ -10,7 +10,7 @@ using MyTaskAPI.Services;
 
 namespace MyTaskAPI.Controllers.Tasks
 {                       
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TasksController : ControllerBase

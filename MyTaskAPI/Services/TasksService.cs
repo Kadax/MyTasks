@@ -1,17 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MyTaskAPI.Migrations;
 using MyTaskAPI.Model;
 using MyTaskAPI.Model.Tasks;
+using System.Net.NetworkInformation;
+using System.Security.Claims;
 
 namespace MyTaskAPI.Services
 {
-
     public class TasksService : ITasksService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public TasksService(ApplicationDbContext context)
+        public TasksService(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<List<MyTask>> GetAllTasks(bool all= false)
@@ -19,8 +23,10 @@ namespace MyTaskAPI.Services
             if (all)
                 return await _context.Tasks.ToListAsync();
             else
-                return await _context.Tasks.Where(i => i.isArchive != true).ToListAsync();
-
+            {
+                var t = await _context.Tasks.Where(i => i.isArchive != true).ToListAsync();
+                return t;
+            }
         }
 
         public async Task<MyTask> GetTaskById(int id)
@@ -30,6 +36,12 @@ namespace MyTaskAPI.Services
 
         public async Task<MyTask> CreateTask(MyTask newTask)
         {
+            ClaimsPrincipal userPrincipal = _httpContextAccessor.HttpContext?.User;
+            var userid = userPrincipal.Claims.FirstOrDefault(i => i.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+
+            newTask.autorId = userid;
+            newTask.modifiedId = userid;
+
             _context.Tasks.Add(newTask);
             await _context.SaveChangesAsync();
             return newTask;
@@ -37,6 +49,10 @@ namespace MyTaskAPI.Services
 
         public async Task ChangeStatusTask(int TaskId, int StateId)
         {
+            ClaimsPrincipal userPrincipal = _httpContextAccessor.HttpContext?.User;
+            var userid = userPrincipal.Claims.FirstOrDefault(i => i.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+
+
             var task = await _context.Tasks.FindAsync(TaskId);
             if (task == null)
             {
@@ -44,13 +60,13 @@ namespace MyTaskAPI.Services
             }
 
             task.statusId = StateId;
+            task.modifiedId = userid;
 
             task.updateAt = DateTime.Now;
 
             await _context.SaveChangesAsync();
 
         }
-
 
         public async Task OrderTasks(List<MyTaskOrderDTO> tasks)
         {
@@ -70,6 +86,10 @@ namespace MyTaskAPI.Services
 
         public async Task<MyTask> UpdateTask(MyTask mytask)
         {
+
+            ClaimsPrincipal userPrincipal = _httpContextAccessor.HttpContext?.User;
+            var userid = userPrincipal.Claims.FirstOrDefault(i => i.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+
             var task = await _context.Tasks.FindAsync(mytask.id);
             if (task == null)
             {
@@ -77,6 +97,8 @@ namespace MyTaskAPI.Services
             }
 
             task.updateAt = DateTime.Now;
+            task.modifiedId = userid;
+
 
             task.description = mytask.description;
             task.title = mytask.title;
@@ -86,6 +108,9 @@ namespace MyTaskAPI.Services
             task.executorId = mytask.executorId;
             task.statusId = mytask.statusId;
 
+            task.isFixed = mytask.isFixed;
+            task.taskTypesId = mytask.taskTypesId;
+
             await _context.SaveChangesAsync();
 
             return task;
@@ -93,11 +118,17 @@ namespace MyTaskAPI.Services
 
         public async Task ArchiveTask(int id)
         {
+            ClaimsPrincipal userPrincipal = _httpContextAccessor.HttpContext?.User;
+            var userid = userPrincipal.Claims.FirstOrDefault(i => i.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+
+
             var task = await _context.Tasks.FindAsync(id);
             if (task == null)
             {
                 throw new HttpRequestException("Task not found");
             }
+
+            task.modifiedId = userid;
 
             task.isArchive = true;
 
@@ -126,8 +157,64 @@ namespace MyTaskAPI.Services
 
         }
 
+        public async Task<Status> SaveStatus(Status status)
+        {
+            var s = await _context.TaskStatuses.FindAsync(status.id);
+            if (s == null)
+            {
+                throw new HttpRequestException(HttpRequestError.InvalidResponse);
+            }
+
+            s.name = status.name;
+            s.isHidden = status.isHidden;
+
+            await _context.SaveChangesAsync();
+
+            return s;
+        }
+
+        public async Task<TypeTask> SaveTypeTask(TypeTask type)
+        {
+            var s = await _context.TypeTasks.FindAsync(type.id);
+            if (s == null)
+            {
+                if(type.id != 0)
+                    throw new HttpRequestException(HttpRequestError.InvalidResponse);
+                else
+                {
+                    s = new TypeTask()
+                    {
+                       name = type.name
+                    };
+                    await _context.TypeTasks.AddAsync(s);
+                }
+            }
+
+            s.name = type.name;
+            s.color = type.color;
+
+            await _context.SaveChangesAsync();
+
+            return s;
+        }
+
+        public async Task DeleteTypeTask(int id)
+        {
+            var t = await _context.TypeTasks.FindAsync(id);
+            if (t == null)
+            {
+                throw new HttpRequestException("Type not found");
+            }
+
+            _context.TypeTasks.Remove(t);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<int> AddTimeSpent(int taskId, int duration)
         {
+            ClaimsPrincipal userPrincipal = _httpContextAccessor.HttpContext?.User;
+            var userid = userPrincipal.Claims.FirstOrDefault(i => i.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+
             var task = await _context.Tasks.FindAsync(taskId);
             if (task == null)
             {
@@ -139,7 +226,11 @@ namespace MyTaskAPI.Services
                taskId = taskId,
                time = duration
             };
-            
+
+
+            task.modifiedId = userid;
+
+
             await _context.TimeSpents.AddAsync(v);
             await _context.SaveChangesAsync();
 
@@ -153,6 +244,13 @@ namespace MyTaskAPI.Services
 
         }
 
-    }
+        public async Task<List<TypeTask>> GetTypesTask()
+        {
+            var types = await _context.TypeTasks.ToListAsync();
 
+            return types;
+        }
+
+    }
 }
+

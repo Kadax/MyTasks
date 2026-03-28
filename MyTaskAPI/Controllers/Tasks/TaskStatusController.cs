@@ -6,7 +6,7 @@ using MyTaskAPI.Services;
 
 namespace MyTaskAPI.Controllers.Tasks
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TaskStatusController : ControllerBase
@@ -22,6 +22,12 @@ namespace MyTaskAPI.Controllers.Tasks
         public async Task<List<Status>> GetStatuses()
         {
             return await _tasksService.GetTaskStatus();
+        }
+
+        [HttpPut]
+        public async Task<Status> SaveStatus(Status status)
+        {
+            return await _tasksService.SaveStatus(status);
         }
 
     }

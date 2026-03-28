@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyTaskAPI.Model.Tasks;
 using MyTaskAPI.Services;
@@ -6,6 +7,7 @@ using MyTaskAPI.Services;
 namespace MyTaskAPI.Controllers.Tasks
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class TimeSpentController : ControllerBase
     {

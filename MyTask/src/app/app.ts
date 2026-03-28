@@ -1,9 +1,11 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { KanbanBoardComponent } from "./components/kanban-board/kanban-board";
 import { CommonModule } from '@angular/common';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet, RouterLinkWithHref } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { error } from 'console';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 
 
@@ -11,8 +13,9 @@ import { error } from 'console';
 @Component({
   selector: 'app-root',
   imports: [CommonModule,
-    // KanbanBoardComponent,
-    RouterOutlet],
+    MatIconModule,
+    MatButtonModule,
+    RouterOutlet, RouterLinkWithHref],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -21,7 +24,7 @@ export class App implements OnInit{
   private router = inject(Router);
 
 
-  constructor(private authService: AuthService){
+  constructor(public authService: AuthService){
   }
 
   ngOnInit(): void {

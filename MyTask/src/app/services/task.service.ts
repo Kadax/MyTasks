@@ -1,9 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { MyTask, Status } from '../models/task.model';
+import { MyTask, Status, TypeTask } from '../models/task.model';
 import { HttpClient } from '@angular/common/http';
-import { urls } from '../const.ts';
+import { urls } from '../const';
 import { TimeSpentDTO } from '../models/TimeSpentDTO';
+import { error } from 'console';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
@@ -15,11 +16,13 @@ export class TaskService {
     const initial: MyTask[] = [];
     this.tasksSubject.next(initial);
     this.GetListStatuses();
+    this.GetTypeTasks();
   }
 
   private http = inject(HttpClient);
 
   statuses: Status[] = [];
+  types: TypeTask[] = [];
 
   GetListStatuses(){
     this.http.get<Status[]>(urls.server + 'TaskStatus').subscribe(
@@ -27,6 +30,17 @@ export class TaskService {
         this.statuses = date;
       }
     );
+  }
+
+  SaveStatus(status: Status){
+    return this.http.put<Status>(urls.server+'TaskStatus', status);
+  }
+
+
+  getStatuses(): Status[]{
+    return this.statuses.filter(t=>t.isHidden !== true)
+
+
   }
 
   GetListTasks(){
@@ -43,9 +57,52 @@ export class TaskService {
     return req;
   }
 
+  GetTypeTasks(){
+    let t = this.http.get<TypeTask[]>(urls.server+'TaskTypes')
+    t.subscribe(
+      (data) =>{
+        this.types = data;
+      },
+      (error)=>{
+        console.log(error);
+      }
+    );
+  }
+
+  SaveTypeTask(type: TypeTask){
+    return this.http.post<TypeTask>(urls.server+'TaskTypes', type);
+  }
+
+  AddTypeTask(){
+    let t = new TypeTask();
+    t.id = 0;
+    t.name = "Новый тип"
+    t.color = "#fff"
+    this.types.push(t);
+  }
+
+  deleteTypeTask(taskId: number){
+    return this.http.delete(urls.server + 'TaskTypes/'+taskId);
+  }
+
+
+  getFixedTasks():MyTask[] {
+    return this.tasksSubject.getValue().filter(t=>t.isFixed === true)
+    .sort((a, b) => a.orderNumber - b.orderNumber);
+  }
+
+
   /** Получаем задачи по статусу */
   getTasksByStatus(status: Status): MyTask[] {
-    return this.tasksSubject.getValue().filter(t => t.statusId === status.id).sort((a, b) => a.orderNumber - b.orderNumber);
+    return this.tasksSubject.getValue().filter(t => t.statusId === status.id && t.isFixed !== true).sort((a, b) => a.orderNumber - b.orderNumber);
+  }
+
+  getTypeTaskName(typeId: number | null | undefined){
+    return this.types.find(i=>i.id == typeId)?.name;
+  }
+
+  getTypeTaskColor(typeId: number | null | undefined){
+    return this.types.find(i=>i.id == typeId)?.color;
   }
 
   AddTime(taskId: number, time: number){
@@ -112,22 +169,9 @@ export class TaskService {
 
   updateTask(task: MyTask){
     let req =  this.http.put<MyTask>(urls.server + 'Tasks/'+task.id, task);
-    // req.subscribe(
-    //   (data)=>{
-    //     let t = this.tasksSubject.value.find(i=>i.id == task.id);
-    //     if(t){
-    //       t = data;
-    //     }
-    //   },
-    //   (error)=>{
-
-    //   }
-    // );
 
     return req;
   }
-
-
 
 
   /** Удаляем задачу */
@@ -136,7 +180,5 @@ export class TaskService {
     let req =  this.http.delete(urls.server + 'Tasks/'+taskId,{body: isArhive});
 
     return req;
-
-
   }
 }

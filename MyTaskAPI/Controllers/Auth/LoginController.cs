@@ -44,6 +44,7 @@ namespace MyTaskAPI.Controllers.Auth
         [HttpPost]
         public async Task<UserDTO> OnPost(SignInDTO signIn)
         {
+
             var result = await _signInManager.PasswordSignInAsync(signIn.email, signIn.password, signIn.rememberMe, true);
 
             if (result.Succeeded)

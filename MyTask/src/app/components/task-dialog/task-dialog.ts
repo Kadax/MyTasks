@@ -19,6 +19,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { TaskService } from '../../services/task.service';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatCheckbox } from "@angular/material/checkbox";
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 @Component({
@@ -37,8 +39,10 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatDialogContent,
     MatDialogActions,
     MatDatepickerModule,
-    MatNativeDateModule
-  ]
+    MatNativeDateModule,
+    MatCheckbox,
+    MatCheckboxModule
+]
 })
 
 export class TaskDialogComponent implements OnInit {
@@ -60,12 +64,11 @@ export class TaskDialogComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.data==null){
-      this.data = { id: 0, title: '', description:'', statusId: 1, orderNumber: 0 };
+      this.data = { id: 0, title: '', description:'', statusId: 1, orderNumber: 0, isFixed: false };
     }
     else{
       this.planed = this.data.plannedTime ? this.data.plannedTime/60 : 0;
     }
-
   }
 
   delete(archive: boolean){

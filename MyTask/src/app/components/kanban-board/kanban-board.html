@@ -1,9 +1,52 @@
 <!-- <div>
   Доска задач
 </div> -->
+<div class="fixed-boadr">
+  @for (task of this.taskService.getFixedTasks(); track $index) {
+    <div class="fixed-board-card"
+          [style]="'background-color:'+this.taskService.getTypeTaskColor(task.taskTypesId)">
+          <span class="card-header" >
+            <div class="task-row type-task">
+              {{this.taskService.getTypeTaskName(task.taskTypesId)}}
+            </div>
+            <div  class="task-row">
+              <!-- <mat-icon matListIcon>drag_indicator</mat-icon> -->
+              <p class="task-number">
+                #{{task.id}}.
+              </p>
+
+              <div class="task-title">
+                {{task.title}}
+              </div>
+              <button matMiniFab aria-label="Изменение задачи" class="button-action"
+                (click)="this.openTaskDialog(task)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+          </span>
+          @if (task.description){
+            <span class="card-body" matListItemLine >
+                {{task.description}}
+            </span>
+          }
+          <div matListItemLine>
+            Total time: {{totalTime(task.totalTime)}}
+          </div>
+          <div matListItemLine class="card-time">
+            <mat-chip-set aria-label="Fish selection">
+              <mat-chip (click)="this.AddTime(task, 15)">15m</mat-chip>
+              <mat-chip (click)="this.AddTime(task, 60)">1h</mat-chip>
+              <mat-chip (click)="this.AddTime(task, 120)">2h</mat-chip>
+              <mat-chip (click)="this.AddTime(task, 240)">4h</mat-chip>
+            </mat-chip-set>
+          </div>
+    </div>
+  }
+</div>
+
 <div class="board" cdkDropListGroup>
-  <ng-container *ngFor="let status of this.taskService.statuses" >
-    <mat-card class="column">
+  <ng-container *ngFor="let status of this.taskService.getStatuses()" >
+    <mat-card class="column" [hidden]="status.isHidden">
       <mat-card-header class="status">
         <mat-card-title class="status-title">
           <p>{{ status.name }}</p>
@@ -23,7 +66,8 @@
             <mat-list-item lines="3" *ngFor="let task of tasksByStatus.get(status.id); let i = index"
                            cdkDrag
                            [cdkDragData]="task"
-                           class="task-item">
+                           class="task-item"
+                           [style]="'background-color:'+this.taskService.getTypeTaskColor(task.taskTypesId)">
 
                 <span class="card-header" matListItemLine>
                   <div  class="task-row">
@@ -31,7 +75,6 @@
                     <p class="task-number">
                       #{{task.id}}.
                     </p>
-
                     <div class="task-title">
                       {{task.title}}
                     </div>
@@ -59,7 +102,6 @@
                 </div>
             </mat-list-item>
           </mat-list>
-
         </div>
       </mat-card-content>
     </mat-card>

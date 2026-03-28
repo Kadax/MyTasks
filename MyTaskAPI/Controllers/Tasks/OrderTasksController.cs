@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyTaskAPI.Model.Tasks;
 using MyTaskAPI.Services;
 
 namespace MyTaskAPI.Controllers.Tasks
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OrderTasksController : ControllerBase

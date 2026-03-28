@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyTaskAPI.Model;
 
 namespace MyTaskAPI.Controllers.Auth
 {
-
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase
@@ -54,7 +54,6 @@ namespace MyTaskAPI.Controllers.Auth
                     Name = "User",
                     NormalizedName = "user"
                 });
-
             }
             else
             {
@@ -80,7 +79,6 @@ namespace MyTaskAPI.Controllers.Auth
             else
             {
                 ret += "User Admin exist\n\r";
-
             }
 
             var rolesList = await _userManager.GetRolesAsync(user);
@@ -105,12 +103,7 @@ namespace MyTaskAPI.Controllers.Auth
                 ret += "User Admin exist role User\n\r";
             }
 
-
-
             return ret;
-
         }
-
-
     }
 }

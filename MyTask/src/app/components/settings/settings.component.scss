@@ -1,0 +1,60 @@
+.card-row{
+
+  margin: 25px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  padding: 15px 30px;
+
+  .card-title {
+    border-bottom: 1px solid #e0e0e0;
+    font-size: x-large;
+  }
+
+  .card-prop{
+    border-bottom: 1px solid #e0e0e0;
+    font-size: large;
+
+    display: flex;
+
+    .card-prop-width{
+      min-width: 300px;
+      width: 100%;
+    }
+  }
+
+  .card-checkbox{
+    font-size: large;
+  }
+
+  .card-action{
+    margin: 20px 0;
+
+    button{
+      margin-right: 20px;
+    }
+
+  }
+
+  .card-color{
+    width: 30px;
+    height: 30px;
+    margin: 28px 10px;
+
+  }
+
+}
+
+.header{
+  margin: 15px 0;
+}
+
+.actions{
+  margin: 25px;
+
+  button{
+    width: 150px;
+  }
+
+}
+
+

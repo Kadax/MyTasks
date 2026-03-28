@@ -1,0 +1,96 @@
+<div class="width-x">
+
+  <mat-accordion>
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header class="header">
+        <mat-panel-title> Статусы задач </mat-panel-title>
+        <mat-panel-description>
+          Здесь вы можете настроить отображение статусов задач в системе управления задачами (ТАСК-трекер). Изменяйте названия статусов и определяйте их видимость.
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      @for(state of this.taskService.statuses; track $index){
+        <div class="card-row">
+          <p class="card-title">
+            {{state.name}}
+          </p>
+          <div class="card-prop">
+            <mat-form-field class="card-prop-width">
+              <label for="title">Название</label>
+              <input type="text" id="title" matInput [(ngModel)]="state.name">
+            </mat-form-field>
+          </div>
+          <div class="card-prop">
+            <p>
+              Отображение статуса на доске
+            </p>
+            <mat-checkbox [(ngModel)]="state.isHidden" class="card-checkbox">
+              Скрыть
+            </mat-checkbox>
+          </div>
+          <div class="card-action">
+            <button matButton="filled" (click)="this.save(state)">
+              Сохранить
+            </button>
+          </div>
+        </div>
+      }
+
+    </mat-expansion-panel>
+    <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+      <mat-expansion-panel-header>
+        <mat-panel-title> Типы задач </mat-panel-title>
+        <mat-panel-description>
+          Настрока типов задач
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      @for(t of this.taskService.types; track $index){
+
+        <div class="card-row">
+          <p class="card-title">
+            {{t.name}}
+          </p>
+          <div class="card-prop">
+            <mat-form-field class="card-prop-width">
+              <label for="title">Название</label>
+              <input type="text" id="type_title" matInput [(ngModel)]="t.name">
+            </mat-form-field>
+          </div>
+          <div class="card-prop">
+            <mat-form-field class="card-prop-width">
+              <label for="title">Цвет</label>
+              <input type="text" id="type_title" matInput [(ngModel)]="t.color">
+            </mat-form-field>
+            <div class="card-color"
+                  [style]="'background-color:'+t.color">
+            </div>
+          </div>
+          <div class="card-action">
+            <button matButton="filled" (click)="this.saveType(t)">
+              Сохранить
+            </button>
+            <button matButton="outlined" (click)="this.delete(t)">
+              Удалить
+            </button>
+          </div>
+
+        </div>
+      }
+
+      <div class="card-action">
+        <button matButton="filled" (click)="this.addType()">
+          Добавить
+        </button>
+      </div>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <div class="actions">
+    <button matFab routerLink="/">
+      <mat-icon>arrow_back</mat-icon>
+      Back
+    </button>
+  </div>
+
+</div>

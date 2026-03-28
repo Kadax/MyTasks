@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyTaskAPI.Model;
 
@@ -10,9 +11,11 @@ using MyTaskAPI.Model;
 namespace MyTaskAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260313143251_tasks_type_defaultTypes")]
+    partial class tasks_type_defaultTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.3");
@@ -306,9 +309,6 @@ namespace MyTaskAPI.Migrations
                     b.Property<DateTime>("createAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool?>("isHidden")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -325,7 +325,6 @@ namespace MyTaskAPI.Migrations
                         {
                             id = 1,
                             createAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            isHidden = false,
                             name = "To Do",
                             updateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -333,7 +332,6 @@ namespace MyTaskAPI.Migrations
                         {
                             id = 2,
                             createAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            isHidden = false,
                             name = "In Progress",
                             updateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -341,7 +339,6 @@ namespace MyTaskAPI.Migrations
                         {
                             id = 3,
                             createAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            isHidden = false,
                             name = "Blocked",
                             updateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -349,7 +346,6 @@ namespace MyTaskAPI.Migrations
                         {
                             id = 4,
                             createAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            isHidden = false,
                             name = "Testing",
                             updateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -357,7 +353,6 @@ namespace MyTaskAPI.Migrations
                         {
                             id = 5,
                             createAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            isHidden = false,
                             name = "Done",
                             updateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });

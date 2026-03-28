@@ -16,6 +16,11 @@ html {
     typography: Roboto,
     density: 0,
   ));
+
+  @include mat.checkbox-overrides((
+    label-text-size: large
+  ));
+
 }
 
 body {
@@ -36,5 +41,14 @@ body {
   height: 100%;
 }
 
+.full-width{
+  width: 100%;
+}
+
+.width-x {
+  margin: 30px auto;
+  width: 100%;
+  max-width: 1200px;
+}
 
 /* You can add global styles to this file, and also import other style files */

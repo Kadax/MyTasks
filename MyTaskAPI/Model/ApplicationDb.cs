@@ -26,6 +26,8 @@ namespace MyTaskAPI.Model
 
         public DbSet<TimeSpent> TimeSpents { set; get; }
 
+        public DbSet<TypeTask> TypeTasks { set; get; }
+
 
 
 
@@ -52,12 +54,18 @@ namespace MyTaskAPI.Model
             });
 
             modelBuilder.Entity<Status>().HasData(
-            new Status { id = 1, name= "To Do",  createAt= new DateTime(), updateAt= new DateTime() },
-            new Status { id = 2, name = "In Progress", createAt = new DateTime(), updateAt = new DateTime() },
-            new Status { id = 3, name = "Blocked", createAt = new DateTime(), updateAt = new DateTime() },
-            new Status { id = 4, name = "Testing", createAt = new DateTime(), updateAt = new DateTime() },
-            new Status { id = 5, name = "Done", createAt = new DateTime(), updateAt = new DateTime() }
-        );
+                new Status { id = 1, name= "To Do",  createAt= new DateTime(), updateAt= new DateTime() },
+                new Status { id = 2, name = "In Progress", createAt = new DateTime(), updateAt = new DateTime() },
+                new Status { id = 3, name = "Blocked", createAt = new DateTime(), updateAt = new DateTime() },
+                new Status { id = 4, name = "Testing", createAt = new DateTime(), updateAt = new DateTime() },
+                new Status { id = 5, name = "Done", createAt = new DateTime(), updateAt = new DateTime() }
+            );
+
+            modelBuilder.Entity<TypeTask>().HasData(
+                new TypeTask { id = 1, name="Personal", color= "#CCFFCC" },
+                new TypeTask { id = 2, name = "Dev", color = "#CCE5FF" },
+                new TypeTask { id = 3, name = "Work", color = "#CCCCFF" }
+            );
 
 
         }

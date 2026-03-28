@@ -1,7 +1,7 @@
 import { SignInDTO } from './../models/SignInDTO';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { urls } from '../const.ts';
+import { urls } from '../const';
 import { UserDTO } from '../models/UserDTO.js';
 
 @Injectable({
@@ -19,6 +19,13 @@ export class AuthService {
   user: UserDTO | undefined;
   isLogin: boolean = false;
 
+  isAdmin(): boolean{
+    if(this.user)
+      return (this.user.roles.findIndex(i=>i === 'Administrator') != -1);
+    else
+      return false;
+  }
+
   CheckLogin(){
     var request = this.http.get<UserDTO>(urls.server + 'login');
     request.subscribe(
@@ -32,7 +39,6 @@ export class AuthService {
   }
 
   SignIn(signin: SignInDTO ) {
-
     var request = this.http.post<UserDTO>(urls.server + 'login', signin);
     request.subscribe(
       date=>{
