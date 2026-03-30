@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyTaskAPI.Migrations;
 using MyTaskAPI.Model;
 using MyTaskAPI.Model.Tasks;
 using System.Net.NetworkInformation;

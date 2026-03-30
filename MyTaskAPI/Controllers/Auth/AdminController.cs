@@ -25,19 +25,23 @@ namespace MyTaskAPI.Controllers.Auth
             _roleManager = roleManager;
         }
 
-       
+
         /// <summary>
         /// Функция проверки сущетвования базовых ролей и Администратора системы
         /// </summary>
         /// <returns></returns>
+        [AllowAnonymous]
         [HttpGet]
         public async Task<string> CheckAdmin()
         {
+
+
+
             var ret = "";
             
             var roles = _roleManager.Roles.ToList();
 
-            if(roles.Count < 2)
+            if (roles.Count < 2)
             {
                 ret += "Create base Roles \n\r";
 
@@ -46,8 +50,8 @@ namespace MyTaskAPI.Controllers.Auth
                     Id = "Admin",
                     Name = "Administrator",
                     NormalizedName = "admin"
-                }); 
-                
+                });
+
                 var userRole = await _roleManager.CreateAsync(new ApplicationRole()
                 {
                     Id = "User",

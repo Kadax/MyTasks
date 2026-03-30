@@ -7,5 +7,5 @@ export const routes: Routes = [
     {path: '', component: KanbanBoardComponent},
     {path: 'auth', component: AuthenticationComponent},
     {path: 'settings', component: SettingsComponent},
-    { path: "**", redirectTo: "/"}
+    //{ path: "**", redirectTo: "/"}
 ];

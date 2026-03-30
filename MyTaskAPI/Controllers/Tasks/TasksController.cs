@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MyTaskAPI.Migrations;
 using MyTaskAPI.Model;
 using MyTaskAPI.Model.Tasks;
 using MyTaskAPI.Services;

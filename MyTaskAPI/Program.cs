@@ -3,15 +3,28 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.FileProviders;
 using MyTaskAPI.Model;
 using MyTaskAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var ConnectionString = builder.Configuration
+                .GetConnectionString("DefaultConnection") ??
+                throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(
-    options => options.UseSqlite("Data Source=tasks.db"));
+    //options => options.UseSqlite("Data Source=tasks.db")
+        options=> {
+                options.UseNpgsql(ConnectionString);
+
+                options.ConfigureWarnings(warnings =>
+                {
+                    warnings.Ignore(RelationalEventId.PendingModelChangesWarning);
+                });
+        }
+    );
 
 
 builder.Services.AddControllers();
@@ -45,7 +58,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 options.Cookie.SecurePolicy = CookieSecurePolicy.None;
                 options.Cookie.HttpOnly = false;
                 options.Cookie.SameSite = SameSiteMode.None;
-           options.LoginPath = "/auth";
+                options.LoginPath = "/#/auth";
            }
        );
 
@@ -81,14 +94,14 @@ using (var scope = app.Services.CreateScope())
 
 //app.UseHttpsRedirection();
 
-app.UseDefaultFiles();
+//app.UseDefaultFiles();
 
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(builder.Environment.ContentRootPath, "StaticFiles"))
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//    FileProvider = new PhysicalFileProvider(
+//        Path.Combine(builder.Environment.ContentRootPath, "StaticFiles"))
     
-});
+//});
 
 
 

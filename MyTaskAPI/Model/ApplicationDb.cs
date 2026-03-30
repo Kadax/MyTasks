@@ -12,11 +12,18 @@ namespace MyTaskAPI.Model
         IdentityUserClaim<string>, ApplicationUserRole, IdentityUserLogin<string>,
         IdentityRoleClaim<string>, IdentityUserToken<string>>
     {
+
+      
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :
             base(options)
-        { 
-        
+        {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);          
+
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            => optionsBuilder.UseNpgsql();
+
 
         public DbSet<Status> TaskStatuses { get; set; }
 
@@ -27,8 +34,6 @@ namespace MyTaskAPI.Model
         public DbSet<TimeSpent> TimeSpents { set; get; }
 
         public DbSet<TypeTask> TypeTasks { set; get; }
-
-
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -53,6 +58,8 @@ namespace MyTaskAPI.Model
                     .IsRequired();
             });
 
+           
+
             modelBuilder.Entity<Status>().HasData(
                 new Status { id = 1, name= "To Do",  createAt= new DateTime(), updateAt= new DateTime() },
                 new Status { id = 2, name = "In Progress", createAt = new DateTime(), updateAt = new DateTime() },
@@ -62,10 +69,12 @@ namespace MyTaskAPI.Model
             );
 
             modelBuilder.Entity<TypeTask>().HasData(
-                new TypeTask { id = 1, name="Personal", color= "#CCFFCC" },
+                new TypeTask { id = 1, name = "Personal", color= "#CCFFCC" },
                 new TypeTask { id = 2, name = "Dev", color = "#CCE5FF" },
                 new TypeTask { id = 3, name = "Work", color = "#CCCCFF" }
             );
+
+
 
 
         }

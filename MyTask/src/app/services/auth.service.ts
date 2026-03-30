@@ -1,8 +1,8 @@
 import { SignInDTO } from './../models/SignInDTO';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { urls } from '../const';
 import { UserDTO } from '../models/UserDTO.js';
+import { AppSettings } from '../../app.settings';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,7 @@ export class AuthService {
   }
 
   CheckLogin(){
-    var request = this.http.get<UserDTO>(urls.server + 'login');
+    var request = this.http.get<UserDTO>(AppSettings.env_vars.API_URL + 'login');
     request.subscribe(
       date=>{
         this.user = date;
@@ -39,7 +39,7 @@ export class AuthService {
   }
 
   SignIn(signin: SignInDTO ) {
-    var request = this.http.post<UserDTO>(urls.server + 'login', signin);
+    var request = this.http.post<UserDTO>(AppSettings.env_vars.API_URL + 'login', signin);
     request.subscribe(
       date=>{
         this.user = date;

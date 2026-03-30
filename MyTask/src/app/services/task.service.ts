@@ -2,9 +2,9 @@ import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { MyTask, Status, TypeTask } from '../models/task.model';
 import { HttpClient } from '@angular/common/http';
-import { urls } from '../const';
 import { TimeSpentDTO } from '../models/TimeSpentDTO';
 import { error } from 'console';
+import { AppSettings } from '../../app.settings';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
@@ -25,7 +25,7 @@ export class TaskService {
   types: TypeTask[] = [];
 
   GetListStatuses(){
-    this.http.get<Status[]>(urls.server + 'TaskStatus').subscribe(
+    this.http.get<Status[]>(AppSettings.env_vars.API_URL + 'TaskStatus').subscribe(
       date=>{
         this.statuses = date;
       }
@@ -33,7 +33,7 @@ export class TaskService {
   }
 
   SaveStatus(status: Status){
-    return this.http.put<Status>(urls.server+'TaskStatus', status);
+    return this.http.put<Status>(AppSettings.env_vars.API_URL+'TaskStatus', status);
   }
 
 
@@ -44,7 +44,7 @@ export class TaskService {
   }
 
   GetListTasks(){
-    let req =  this.http.get<MyTask[]>(urls.server + 'Tasks')
+    let req =  this.http.get<MyTask[]>(AppSettings.env_vars.API_URL + 'Tasks')
     req.subscribe(
       (data)=>{
         this.tasksSubject.next(data);
@@ -58,7 +58,7 @@ export class TaskService {
   }
 
   GetTypeTasks(){
-    let t = this.http.get<TypeTask[]>(urls.server+'TaskTypes')
+    let t = this.http.get<TypeTask[]>(AppSettings.env_vars.API_URL+'TaskTypes')
     t.subscribe(
       (data) =>{
         this.types = data;
@@ -70,7 +70,7 @@ export class TaskService {
   }
 
   SaveTypeTask(type: TypeTask){
-    return this.http.post<TypeTask>(urls.server+'TaskTypes', type);
+    return this.http.post<TypeTask>(AppSettings.env_vars.API_URL+'TaskTypes', type);
   }
 
   AddTypeTask(){
@@ -82,7 +82,7 @@ export class TaskService {
   }
 
   deleteTypeTask(taskId: number){
-    return this.http.delete(urls.server + 'TaskTypes/'+taskId);
+    return this.http.delete(AppSettings.env_vars.API_URL + 'TaskTypes/'+taskId);
   }
 
 
@@ -91,6 +91,9 @@ export class TaskService {
     .sort((a, b) => a.orderNumber - b.orderNumber);
   }
 
+  haveFixedTasks(): boolean {
+    return this.tasksSubject.getValue().findIndex(t=>t.isFixed === true) !== -1;
+  }
 
   /** Получаем задачи по статусу */
   getTasksByStatus(status: Status): MyTask[] {
@@ -111,7 +114,7 @@ export class TaskService {
     t.taskId = taskId;
     t.duration = time;
 
-    return this.http.post<number>(urls.server + 'TimeSpent', t);
+    return this.http.post<number>(AppSettings.env_vars.API_URL + 'TimeSpent', t);
 
   }
 
@@ -124,7 +127,7 @@ export class TaskService {
       order: index
      }));
 
-    this.http.post(urls.server+"OrderTasks", tasks).subscribe(
+    this.http.post(AppSettings.env_vars.API_URL+"OrderTasks", tasks).subscribe(
       (data)=>{
 
       },
@@ -143,7 +146,7 @@ export class TaskService {
         t.id === taskId ? { ...t, statusId: newStatus.id } : t
       );
 
-      this.http.post(urls.server+"ChangeState?TaskId="+taskId+"&StateId="+newStatus.id,null).subscribe(
+      this.http.post(AppSettings.env_vars.API_URL+"ChangeState?TaskId="+taskId+"&StateId="+newStatus.id,null).subscribe(
         data=>{
 
         },
@@ -161,14 +164,14 @@ export class TaskService {
   addTask(task: Omit<MyTask, 'id'>) {
     const newTask: MyTask = { ...task, id: 0 };
 
-    let req =  this.http.post<MyTask>(urls.server + 'Tasks', newTask);
+    let req =  this.http.post<MyTask>(AppSettings.env_vars.API_URL + 'Tasks', newTask);
 
 
     return req;
   }
 
   updateTask(task: MyTask){
-    let req =  this.http.put<MyTask>(urls.server + 'Tasks/'+task.id, task);
+    let req =  this.http.put<MyTask>(AppSettings.env_vars.API_URL + 'Tasks/'+task.id, task);
 
     return req;
   }
@@ -177,7 +180,7 @@ export class TaskService {
   /** Удаляем задачу */
   deleteTask(taskId: number, isArhive: boolean) {
 
-    let req =  this.http.delete(urls.server + 'Tasks/'+taskId,{body: isArhive});
+    let req =  this.http.delete(AppSettings.env_vars.API_URL + 'Tasks/'+taskId,{body: isArhive});
 
     return req;
   }

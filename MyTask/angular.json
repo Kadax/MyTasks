@@ -28,7 +28,8 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/config"
             ],
             "styles": [
               "src/styles.scss"
@@ -53,7 +54,17 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.production.ts"
+                },
+                {
+                  "replace": "src/config/env.json",
+                  "with": "src/config/env.production.json"
+                }
+              ]
             },
             "development": {
               "optimization": false,

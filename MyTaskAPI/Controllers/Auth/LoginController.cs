@@ -62,11 +62,14 @@ namespace MyTaskAPI.Controllers.Auth
 
                 return u;
             }
+
             if (result.IsLockedOut)
             {
                 throw new HttpRequestException("IsLockedOut");
 
             }
+
+
 
             throw new HttpRequestException("error");
 
