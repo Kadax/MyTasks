@@ -4,6 +4,11 @@
       <h1>Доска задач</h1>
 
       <div class="settings">
+        @if (this.authService.isLogin){
+          <button matMiniFab routerLink="changepass">
+            <mat-icon>manage_accounts</mat-icon>
+          </button>
+        }
         @if (this.authService.isAdmin()) {
           <button  matMiniFab routerLink="settings">
             <mat-icon>settings</mat-icon>

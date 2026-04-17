@@ -328,6 +328,9 @@ namespace MyTaskAPI.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("orderNumber")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("updateAt")
                         .HasColumnType("timestamp without time zone");
 
@@ -342,6 +345,7 @@ namespace MyTaskAPI.Migrations
                             createAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             isHidden = false,
                             name = "To Do",
+                            orderNumber = 0,
                             updateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -350,6 +354,7 @@ namespace MyTaskAPI.Migrations
                             createAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             isHidden = false,
                             name = "In Progress",
+                            orderNumber = 0,
                             updateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -358,6 +363,7 @@ namespace MyTaskAPI.Migrations
                             createAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             isHidden = false,
                             name = "Blocked",
+                            orderNumber = 0,
                             updateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -366,6 +372,7 @@ namespace MyTaskAPI.Migrations
                             createAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             isHidden = false,
                             name = "Testing",
+                            orderNumber = 0,
                             updateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -374,6 +381,7 @@ namespace MyTaskAPI.Migrations
                             createAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             isHidden = false,
                             name = "Done",
+                            orderNumber = 0,
                             updateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });

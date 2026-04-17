@@ -11,11 +11,12 @@ RUN ng build
 # Stage 2: Запуск nginx
 FROM nginx:alpine
 
-# Меняем конфиг nginx-а на собственный
-COPY nginx.conf /etc/nginx/nginx.conf
-
 # Копируем собранное приложение из предыдущего этапа в рабочую директорию nginx
 COPY --from=build /app/dist/MyTask/browser /usr/share/nginx/html
+
+# Меняем конфиг nginx-а на собственный
+COPY --from=build /app/nginx.conf /etc/nginx/nginx.conf
+
 EXPOSE 8080
 
 # Запускаем nginx

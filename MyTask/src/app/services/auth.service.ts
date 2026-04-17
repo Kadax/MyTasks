@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { UserDTO } from '../models/UserDTO.js';
 import { AppSettings } from '../../app.settings';
+import { ChangePassDTO } from '../models/ChangePassDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class AuthService {
   user: UserDTO | undefined;
   isLogin: boolean = false;
 
-  isAdmin(): boolean{
+  isAdmin(): boolean {
     if(this.user)
       return (this.user.roles.findIndex(i=>i === 'Administrator') != -1);
     else
@@ -53,6 +54,13 @@ export class AuthService {
     return request;
   }
 
+  ChangePass(cangePass: ChangePassDTO){
+
+    var request = this.http.post(AppSettings.env_vars.API_URL + 'ChangePass', cangePass);
+    return request;
+
+
+  }
 
 
 

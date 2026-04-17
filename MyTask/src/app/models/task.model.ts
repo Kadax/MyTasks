@@ -2,11 +2,13 @@ export class Status {
   id: number = 0;
   name: string = "new";
   isHidden: boolean = false;
+  orderNumber: number = 0;
 
   constructor(id: number, name: string) {
     this.id = id;
     this.name = name;
     this.isHidden = false;
+    this.orderNumber = 0;
   }
 }
 

@@ -11,6 +11,8 @@ namespace MyTaskAPI.Model.Tasks
         public string name { set; get; }
         public bool? isHidden { set; get; } = false;
 
+        public int? orderNumber { set; get; } = 0;
+
         [Required]
         public DateTime createAt { set; get; } = DateTime.Now;
         [Required]

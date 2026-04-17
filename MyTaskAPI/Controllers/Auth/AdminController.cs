@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyTaskAPI.Model;
 
 namespace MyTaskAPI.Controllers.Auth
@@ -16,13 +17,20 @@ namespace MyTaskAPI.Controllers.Auth
         public readonly IPasswordHasher<ApplicationUser> _passwordHasher;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly IConfiguration _config;
 
-        
-        public AdminController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager,  IPasswordHasher<ApplicationUser> passwordHasher)
+
+
+        public AdminController(
+                                IConfiguration config,
+                                UserManager<ApplicationUser> userManager, 
+                                RoleManager<ApplicationRole> roleManager,  
+                                IPasswordHasher<ApplicationUser> passwordHasher)
         {
             _userManager = userManager;
             _passwordHasher = passwordHasher;
             _roleManager = roleManager;
+            _config = config;
         }
 
 
@@ -33,13 +41,20 @@ namespace MyTaskAPI.Controllers.Auth
         [AllowAnonymous]
         [HttpGet]
         public async Task<string> CheckAdmin()
-        {
+        {            
 
 
+
+            var usersCount = await _userManager.Users.CountAsync();
+
+            if(usersCount != 0)
+            {
+                throw new Exception("Users already exist in the system");
+            }
+
+            var roles = await _roleManager.Roles.ToListAsync();
 
             var ret = "";
-            
-            var roles = _roleManager.Roles.ToList();
 
             if (roles.Count < 2)
             {
@@ -64,25 +79,41 @@ namespace MyTaskAPI.Controllers.Auth
                 ret += "Base Roles exists \n\r";
             }
 
-            var user = await _userManager.FindByNameAsync("admin@admin.com");
+
+            var name = _config["DefaultAdmin:Name"];
+            var email = _config["DefaultAdmin:Email"];
+            var pass = _config["DefaultAdmin:Pass"];
+
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new Exception("an empty user in the configuration");
+            }
+            if (string.IsNullOrEmpty(email))
+            {
+                throw new Exception("an empty email in the configuration");
+            }
+            if (string.IsNullOrEmpty(pass))
+            {
+                throw new Exception("an empty pass in the configuration");
+            }
+
+
+            var user = await _userManager.FindByEmailAsync(email);
 
             if (user == null)
             {
                 ret += "Create Admin \n\r";
 
-
-                user = new ApplicationUser { UserName = "admin@admin.com", Email = "admin@admin.com" };
-
-                var password = "admin"; // Change this
-
-                user.PasswordHash = _passwordHasher.HashPassword(user, password);
+                user = new ApplicationUser { UserName = name, Email = email };
+                user.PasswordHash = _passwordHasher.HashPassword(user, pass);
 
                 var r2 = await _userManager.CreateAsync(user);
-
             }
             else
             {
                 ret += "User Admin exist\n\r";
+
+                
             }
 
             var rolesList = await _userManager.GetRolesAsync(user);
@@ -109,5 +140,7 @@ namespace MyTaskAPI.Controllers.Auth
 
             return ret;
         }
+
+
     }
 }

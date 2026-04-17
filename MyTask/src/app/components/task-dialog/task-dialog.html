@@ -1,34 +1,34 @@
-<h2 mat-dialog-title>Task edit</h2>
+<h2 mat-dialog-title>Редактирование задачи</h2>
 
 <mat-dialog-content>
   <div>
     <mat-form-field class="form-width-full">
-      <label for="title">Title</label>
+      <label for="title">Название</label>
       <input type="text" id="title" matInput [(ngModel)]="this.data.title">
     </mat-form-field>
   </div>
   <div>
     <mat-form-field class="form-width-full">
-      <label for="description">Description</label>
+      <label for="description">Описание</label>
       <textarea id="description" matInput [(ngModel)]="this.data.description"></textarea>
     </mat-form-field>
   </div>
   <div class="form-width-full deadline-time">
     <mat-form-field class="deadline">
-      <label for="title">Deadline</label>
+      <label for="title">Окончание</label>
       <input matInput [matDatepicker]="picker" [(ngModel)]="this.data.deadline">
       <mat-hint>DD.MM.YYYY</mat-hint>
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker ></mat-datepicker>
     </mat-form-field>
     <mat-form-field class="planedTime">
-      <label for="title">Planned time, hours</label>
+      <label for="title">Планововые Т/З, час</label>
       <input type="number" id="Planned time" matInput [(ngModel)]="this.planed">
     </mat-form-field>
   </div>
   <div>
     <mat-form-field class="form-width-full">
-      <label for="status">Status</label>
+      <label for="status">Статус</label>
       <mat-select id="status" [(ngModel)]="this.data.statusId">
         @for (item of this.taskService.statuses; track $index) {
           <mat-option [value]="item.id">{{item.name}}</mat-option>
@@ -38,7 +38,7 @@
   </div>
   <div>
     <mat-form-field class="form-width-full">
-      <label for="types">Types</label>
+      <label for="types">Тип</label>
       <mat-select id="type" [(ngModel)]="this.data.taskTypesId">
         @for (item of this.taskService.types; track $index) {
           <mat-option [value]="item.id">{{item.name}}</mat-option>
@@ -48,7 +48,7 @@
   </div>
   <div>
       <mat-checkbox [(ngModel)]="this.data.isFixed">
-        Fixed
+        Закреплена
       </mat-checkbox>
   </div>
 
@@ -59,16 +59,16 @@
     <mat-icon>
       delete
     </mat-icon>
-    Delete
+    Удалить
   </button>
 
   <button matButton="outlined" (click)="this.delete(true)" [hidden]="this.data.id==0">
     <mat-icon>
       archive
     </mat-icon>
-    Archive
+    Архивировать
   </button>
 
-  <button matButton="filled" (click)="cancel()">Cancel</button>
-  <button matButton="filled" color="primary" (click)="save()">Save</button>
+  <button matButton="outlined" (click)="cancel()">Отмена</button>
+  <button matButton="filled" color="primary" (click)="save()">Сохранить</button>
 </mat-dialog-actions>

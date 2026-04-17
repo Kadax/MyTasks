@@ -98,7 +98,6 @@ namespace MyTaskAPI.Services
             task.updateAt = DateTime.Now;
             task.modifiedId = userid;
 
-
             task.description = mytask.description;
             task.title = mytask.title;
             task.deadline = mytask.deadline;
@@ -152,8 +151,9 @@ namespace MyTaskAPI.Services
 
             statuses = await _context.TaskStatuses.ToListAsync();
 
-            return statuses;
+            statuses = statuses.OrderBy(i => i.orderNumber).ToList();
 
+            return statuses;
         }
 
         public async Task<Status> SaveStatus(Status status)
@@ -165,6 +165,7 @@ namespace MyTaskAPI.Services
             }
 
             s.name = status.name;
+            s.orderNumber = status.orderNumber;
             s.isHidden = status.isHidden;
 
             await _context.SaveChangesAsync();

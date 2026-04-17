@@ -127,3 +127,32 @@
 .task-row{
   display: flex;
 }
+
+
+@media (max-width: 767px) {
+  /* Здесь разместите стили для телефонов */
+  .fixed-boadr{
+    display: block;
+
+    .fixed-board-card{
+
+      width: calc(100% - 32px);
+      margin-bottom: 10px;
+
+    }
+  }
+
+  .board{
+    display: block;
+
+    .column{
+      width: 100%;
+      min-height: auto;
+    }
+
+    .task-list{
+      min-height: auto;
+    }
+  }
+
+}

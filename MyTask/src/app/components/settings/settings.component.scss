@@ -57,4 +57,25 @@
 
 }
 
+@media (max-width: 767px) {
+
+
+  .mat-expansion-panel-header-description{
+    max-height: 68px;
+    align-items: start;
+    // text-overflow: ellipsis;
+    // white-space: nowrap;  /* Запретить перенос строк */
+    // overflow: hidden;
+  }
+
+  .card-row{
+    margin: 10px 0;
+
+  }
+
+
+
+
+}
+
 
