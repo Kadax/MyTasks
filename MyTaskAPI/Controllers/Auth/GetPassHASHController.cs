@@ -49,7 +49,7 @@ namespace MyTaskAPI.Controllers.Auth
 
 #else
     
-            return Ok();
+            return BadRequest("Не доступно");
 
 #endif
 

@@ -20,6 +20,9 @@ namespace MyTaskAPI.Services
         Task<TypeTask> SaveTypeTask(TypeTask type);
         Task DeleteTypeTask(int id);
 
+        Task<List<ExecutorTask>> GetExecutor();
+        Task<ExecutorTask> SaveExecutor(ExecutorTask ex);
+
     }
 
 }

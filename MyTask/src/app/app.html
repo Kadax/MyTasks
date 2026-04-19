@@ -1,9 +1,14 @@
 <!-- <app-kanban-board></app-kanban-board> -->
-<div>
+<div class="full-h">
     <div class="header">
-      <h1>Доска задач</h1>
+      <h1>Мои задачи</h1>
 
       <div class="settings">
+        @if (this.authService.isLogin){
+          <button matMiniFab (click)="this.toggleDarkMode()">
+            <mat-icon>dark_mode</mat-icon>
+          </button>
+        }
         @if (this.authService.isLogin){
           <button matMiniFab routerLink="changepass">
             <mat-icon>manage_accounts</mat-icon>

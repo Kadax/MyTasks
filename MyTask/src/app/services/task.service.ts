@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { TimeSpentDTO } from '../models/TimeSpentDTO';
 import { error } from 'console';
 import { AppSettings } from '../../app.settings';
+import { Executor } from '../models/Executor';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
@@ -17,12 +18,23 @@ export class TaskService {
     this.tasksSubject.next(initial);
     this.GetListStatuses();
     this.GetTypeTasks();
+    this.GetListExecutors();
   }
 
   private http = inject(HttpClient);
 
   statuses: Status[] = [];
   types: TypeTask[] = [];
+  executors: Executor[] = [];
+
+  GetListExecutors(){
+    this.http.get<Executor[]>(AppSettings.env_vars.API_URL + 'Executors').subscribe(
+      date=>{
+        this.executors = date;
+      }
+    );
+  }
+
 
   GetListStatuses(){
     this.http.get<Status[]>(AppSettings.env_vars.API_URL + 'TaskStatus').subscribe(
@@ -73,12 +85,24 @@ export class TaskService {
     return this.http.post<TypeTask>(AppSettings.env_vars.API_URL+'TaskTypes', type);
   }
 
+  SaveEx(ex: Executor){
+    return this.http.post<Executor>(AppSettings.env_vars.API_URL+'Executors', ex);
+  }
+
   AddTypeTask(){
     let t = new TypeTask();
     t.id = 0;
     t.name = "Новый тип"
     t.color = "#fff"
     this.types.push(t);
+  }
+
+
+  AddEx(){
+    let t = new Executor();
+    t.id = 0;
+    t.name = "Новый"
+    this.executors.push(t);
   }
 
   deleteTypeTask(taskId: number){

@@ -1,13 +1,39 @@
 <div class="width-x">
 
-  <mat-accordion>
-    <mat-expansion-panel hideToggle>
-      <mat-expansion-panel-header class="header">
-        <mat-panel-title> Статусы задач </mat-panel-title>
-        <mat-panel-description>
-          Здесь вы можете настроить отображение статусов задач.
-        </mat-panel-description>
-      </mat-expansion-panel-header>
+  <mat-tab-group>
+
+     <mat-tab label="Исполнители" class="tab">
+        <mat-list class="list">
+          <div mat-subheader>Исполнители</div>
+          @for (executor of this.taskService.executors; track executor) {
+            <mat-list-item>
+                <mat-icon matListItemIcon>account_circle</mat-icon>
+                <div matListItemTitle>
+                  <mat-form-field class="width">
+                    <input type="text" matInput [(ngModel)]="executor.name">
+                  </mat-form-field>
+                </div>
+                <div matListItemLine>{{executor.updateAt | date}}</div>
+                <div matListItemMeta>
+                  <button matButton="filled" (click)="this.saveEx(executor)">
+                    Сохранить
+                  </button>
+                </div>
+            </mat-list-item>
+          }
+        </mat-list>
+      <div class="card-action">
+        <button matButton="tonal" (click)="this.addEx()">
+          Добавить
+        </button>
+      </div>
+
+
+
+
+     </mat-tab>
+
+    <mat-tab label="Статусы задач" class="tab">
 
       @for(state of this.taskService.statuses; track $index){
         <div class="card-row">
@@ -41,15 +67,8 @@
           </div>
         </div>
       }
-
-    </mat-expansion-panel>
-    <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
-      <mat-expansion-panel-header>
-        <mat-panel-title> Типы задач </mat-panel-title>
-        <mat-panel-description>
-          Настрока типов задач
-        </mat-panel-description>
-      </mat-expansion-panel-header>
+    </mat-tab>
+    <mat-tab label="Типы задач">
       @for(t of this.taskService.types; track $index){
 
         <div class="card-row">
@@ -84,13 +103,37 @@
       }
 
       <div class="card-action">
-        <button matButton="filled" (click)="this.addType()">
+        <button matButton="tonal" (click)="this.addType()">
           Добавить
         </button>
       </div>
+    </mat-tab>
+
+
+  </mat-tab-group>
+
+  <!-- <mat-accordion>
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header class="header">
+        <mat-panel-title> Статусы задач </mat-panel-title>
+        <mat-panel-description>
+          Здесь вы можете настроить отображение статусов задач.
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
 
     </mat-expansion-panel>
-  </mat-accordion>
+    <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+      <mat-expansion-panel-header>
+        <mat-panel-title> Типы задач </mat-panel-title>
+        <mat-panel-description>
+          Настрока типов задач
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+
+    </mat-expansion-panel>
+  </mat-accordion> -->
 
   <div class="actions">
     <button matButton="outlined" routerLink="/">

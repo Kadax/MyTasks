@@ -2,11 +2,14 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 
+
 COPY package*.json ./
+
 RUN npm install -g @angular/cli@17
 RUN npm ci
 COPY . .
 RUN ng build
+
 
 # Stage 2: Запуск nginx
 FROM nginx:alpine

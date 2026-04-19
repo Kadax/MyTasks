@@ -8,11 +8,16 @@
 
 html {
   height: 100%;
+
+  //color-scheme: light;
+  color-scheme: light;
+
   @include mat.theme((
-    color: (
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
-    ),
+    color: mat.$blue-palette,
+    // (
+    //   primary: mat.$azure-palette,
+    //   tertiary: mat.$blue-palette,
+    // ),
     typography: Roboto,
     density: 0,
   ));
@@ -24,31 +29,41 @@ html {
 }
 
 body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
-  color-scheme: light;
+  //color-scheme: light;
 
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
+  overflow: hidden;
+
+  background-color: var(--mat-sys-surface-container);
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
+
 
   // Reset the user agent margin.
   margin: 0;
   height: 100%;
 }
 
+body.dark-mode {
+  color-scheme: dark;
+}
+
+body.light-mode {
+  color-scheme: light;
+}
+
+
 .full-width{
   width: 100%;
 }
 
 .width-x {
-  margin: 30px auto;
-  width: 100%;
+  margin: 18px auto 0 auto;
+  width: 80%;
+  min-width: 400px;
   max-width: 1200px;
+  /* height: 100%; */
+  overflow-y: auto;
+  height: calc(100% - 80px);
 }
 
 .width-l{
@@ -57,4 +72,8 @@ body {
   max-width: 600px;
 }
 
-/* You can add global styles to this file, and also import other style files */
+.mdc-text-field--outlined .mat-mdc-form-field-infix, .mdc-text-field--no-label .mat-mdc-form-field-infix {
+    padding-top: var(--mat-form-field-container-vertical-padding, 8px) !important;
+    padding-bottom: var(--mat-form-field-container-vertical-padding, 8px) !important;
+}
+

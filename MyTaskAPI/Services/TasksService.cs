@@ -209,6 +209,13 @@ namespace MyTaskAPI.Services
             _context.TypeTasks.Remove(t);
             await _context.SaveChangesAsync();
         }
+                                                   
+        public async Task<List<TypeTask>> GetTypesTask()
+        {
+            var types = await _context.TypeTasks.ToListAsync();
+
+            return types;
+        }
 
         public async Task<int> AddTimeSpent(int taskId, int duration)
         {
@@ -244,11 +251,36 @@ namespace MyTaskAPI.Services
 
         }
 
-        public async Task<List<TypeTask>> GetTypesTask()
+        public async Task<List<ExecutorTask>> GetExecutor()
         {
-            var types = await _context.TypeTasks.ToListAsync();
+            var executor = await _context.Executors.ToListAsync();
+            return executor.OrderBy(i => i.name).ToList();
+        }
+        public async Task<ExecutorTask> SaveExecutor(ExecutorTask ex)
+        {
+            var s = await _context.Executors.FindAsync(ex.id);
+            if (s == null)
+            {
+                if (ex.id != 0)
+                    throw new HttpRequestException(HttpRequestError.InvalidResponse);
+                else
+                {
+                    s = new ExecutorTask()
+                    {
+                        name = ex.name   ,
+                        createAt = DateTime.Now
+                    };
+                    await _context.Executors.AddAsync(s);
+                }
+            }
 
-            return types;
+            s.name = ex.name;
+            s.updateAt = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+
+            return s;
+
         }
 
     }

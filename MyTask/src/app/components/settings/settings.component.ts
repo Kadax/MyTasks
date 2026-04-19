@@ -13,6 +13,9 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { TaskService } from '../../services/task.service';
 import { Status, TypeTask } from '../../models/task.model';
 import { RouterLinkWithHref } from '@angular/router';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatListModule} from '@angular/material/list';
+import { Executor } from '../../models/Executor';
 
 @Component({
   selector: 'app-settings',
@@ -31,7 +34,9 @@ import { RouterLinkWithHref } from '@angular/router';
     MatCheckbox,
     MatCheckboxModule,
     MatExpansionModule,
-    RouterLinkWithHref
+    RouterLinkWithHref,
+    MatTabsModule,
+    MatListModule
   ]
 })
 export class SettingsComponent implements OnInit {
@@ -71,6 +76,22 @@ export class SettingsComponent implements OnInit {
       }
     )
   }
+
+  saveEx(ex: Executor){
+    this.taskService.SaveEx(ex).subscribe(
+      (data)=>{
+        ex.id = data.id;
+      },
+      (error)=>{
+        console.log(error);
+      }
+    )
+  }
+
+  addEx(){
+    this.taskService.AddEx();
+  }
+
 
   addType(){
     this.taskService.AddTypeTask();

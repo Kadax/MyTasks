@@ -29,7 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Tasks\Executor\" />
     <Folder Include="Migrations\" />
     <Folder Include="StaticFiles\" />
   </ItemGroup>

@@ -31,6 +31,10 @@ export class App implements OnInit{
     this.checkLogIn();
   }
 
+  toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+  }
+
   checkLogIn(){
     this.authService.CheckLogin().subscribe(
       data=>{
@@ -41,6 +45,8 @@ export class App implements OnInit{
       }
     )
   }
+
+
 
 
 
